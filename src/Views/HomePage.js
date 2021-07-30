@@ -13,16 +13,19 @@ export default function HomePage() {
           title="Data"
           image={dataImage}
           description="Raw uploaded data"
+          destination="/data"
         />
         <CardComponent
           title="Analytics"
           image={analyticsImage}
           description="Meaningful results from the acquired data"
+          destination="/data"
         />
         <CardComponent
           title="Report"
           image={reportImage}
           description="Shiftwise reports on data submission"
+          destination="/report"
         />
       </div>
     </div>

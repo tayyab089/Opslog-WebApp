@@ -8,6 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import DataPage from './Views/DataPage';
 import HomePage from './Views/HomePage';
+import ReportPage from './Views/RportPage';
 
 import './App.css';
 
@@ -42,7 +43,12 @@ function App() {
               <Toolbar variant="dense">
                 <img src={OpslogLogo} className="Opslog-logo" />
                 <Typography variant="h6" className={classes.title}>
-                  OpsLog
+                  <Link
+                    to="/"
+                    style={{ textDecoration: 'inherit', color: 'inherit' }}
+                  >
+                    OpsLog
+                  </Link>
                 </Typography>
                 <div className="app-bar-links-container">
                   <Typography variant="subtitle1" className={classes.title}>
@@ -63,7 +69,7 @@ function App() {
                   </Typography>
                   <Typography variant="subtitle1" className={classes.title}>
                     <Link
-                      to="/data"
+                      to="/report"
                       style={{ textDecoration: 'inherit', color: 'inherit' }}
                     >
                       Report
@@ -78,6 +84,9 @@ function App() {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
+            <Route path="/report">
+              <ReportPage />
+            </Route>
             <Route path="/data">
               <DataPage />
             </Route>
