@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles({
   table: {
@@ -23,6 +24,13 @@ const useStyles = makeStyles({
   text: {
     fontWeight: 'bold',
   },
+  progress: {
+    display: 'flex',
+    width: '100%',
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 const StyledTableCell = withStyles((theme) => ({
@@ -32,6 +40,8 @@ const StyledTableCell = withStyles((theme) => ({
   },
   body: {
     fontSize: 14,
+    paddingTop: 7,
+    paddingBottom: 7,
   },
 }))(TableCell);
 
@@ -43,43 +53,38 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const rows = [
-  {
-    date: '2021-07-22',
-    shift: 'Morning',
-    kks_reading_percentage: '94%',
-    max_value_breached: 10,
-    min_value_breached: 4,
-    kks_inactive_count: 6,
-  },
-  {
-    date: '2021-07-22',
-    shift: 'Night',
-    kks_reading_percentage: '99%',
-    max_value_breached: 2,
-    min_value_breached: 2,
-    kks_inactive_count: 1,
-  },
-  {
-    date: '2021-07-23',
-    shift: 'Morning',
-    kks_reading_percentage: '90%',
-    max_value_breached: 1,
-    min_value_breached: 3,
-    kks_inactive_count: 10,
-  },
-  {
-    date: '2021-07-23',
-    shift: 'Night',
-    kks_reading_percentage: '100%',
-    max_value_breached: 5,
-    min_value_breached: 7,
-    kks_inactive_count: 0,
-  },
-];
-
+//Component START=======================================================================================
 const ReportPage = () => {
   const classes = useStyles();
+  const [isloading, setIsLoading] = useState(true);
+  const [rows, setRows] = useState([
+    {
+      date: '2021-07-20',
+      shift: 'Night Shift',
+      kks_reading_percentage: 52.76,
+      max_value_breached: 28,
+      min_value_breached: 19,
+      kks_inactive_count: 186,
+    },
+  ]);
+
+  //Fetching Data--------------------------------------------------START
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    };
+
+    fetch('http://dataloggingapp.herokuapp.com/get_report_data/', options)
+      .then((resp) => resp.json())
+      .then((response) => {
+        console.log(response);
+        setRows(response);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  //Fetching Data-----------------------------------------------------END
   return (
     <div style={{ marginTop: 50 }}>
       <Container>
@@ -123,48 +128,54 @@ const ReportPage = () => {
             </Grid>
           </Grid>
         </div>
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="left">DATE</StyledTableCell>
-                <StyledTableCell align="left">SHIFT</StyledTableCell>
-                <StyledTableCell align="center">
-                  DATA RECORDED %
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  MAX VALUE BREACHED
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  MIN VALUE BREACHED
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  KKS INACTIVE COUNT
-                </StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <StyledTableRow key={row.index}>
-                  <StyledTableCell align="left">{row.date}</StyledTableCell>
-                  <StyledTableCell align="left">{row.shift}</StyledTableCell>
+        {isloading ? (
+          <div className={classes.progress}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="left">DATE</StyledTableCell>
+                  <StyledTableCell align="left">SHIFT</StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.kks_reading_percentage}
+                    DATA RECORDED %
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.max_value_breached}
+                    MAX VALUE BREACHED
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.min_value_breached}
+                    MIN VALUE BREACHED
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.kks_inactive_count}
+                    KKS INACTIVE COUNT
                   </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <StyledTableRow key={row.index}>
+                    <StyledTableCell align="left">{row.date}</StyledTableCell>
+                    <StyledTableCell align="left">{row.shift}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.kks_reading_percentage}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.max_value_breached}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.min_value_breached}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.kks_inactive_count}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Container>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,20 +7,33 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  progress: {
+    display: 'flex',
+    width: '100%',
+    height: 600,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.common.white,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
+    fontSize: 15,
+    fontWeight: 'bold',
+    borderBottomColor: 'black',
   },
   body: {
-    fontSize: 14,
+    fontSize: 15,
+    paddingTop: 7,
+    paddingBottom: 7,
   },
 }))(TableCell);
 
@@ -32,94 +45,73 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const rows = [
-  {
-    index: 1,
-    kks: '10LCB11CT307',
-    date: '2021-07-22 13:49:35',
-    value: 78.0,
-    inactive: 'True',
-    remarks: 'All Okay',
-  },
-  {
-    index: 2,
-    kks: '10LCB11CT307',
-    date: '2021-07-22 13:49:35',
-    value: 78.0,
-    inactive: 'True',
-    remarks: 'All Okay',
-  },
-  {
-    index: 3,
-    kks: '10LCB11CT307',
-    date: '2021-07-22 13:49:35',
-    value: 78.0,
-    inactive: 'True',
-    remarks: 'All Okay',
-  },
-];
-
 const DataPage = () => {
   const classes = useStyles();
+  const [isloading, setIsLoading] = useState(true);
+  const [rows, setRows] = useState([
+    {
+      '#': 1,
+      kks: '10LCB11CT307',
+      description: 'Helloowww',
+      date: '2021-07-22 13:49:35',
+      value: 78.0,
+      inactive: 'True',
+      remarks: 'All Okay',
+    },
+  ]);
 
   useEffect(() => {
     const options = {
       method: 'GET',
-      //mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
     };
-
-    fetch('https://dataloggingapp.herokuapp.com/get_input_data', options)
+    fetch('http://dataloggingapp.herokuapp.com/get_input_data/', options)
       .then((resp) => resp.json())
-      .then((response) => console.log(response))
+      .then((response) => {
+        setRows(response);
+        setIsLoading(false);
+      })
       .catch((err) => console.log(err));
   }, []);
 
-  // useEffect(() => {
-  //   const options = {
-  //     method: 'GET',
-  //     mode: 'no-cors',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   };
-
-  //   fetch('https://dataloggingapp.herokuapp.com/get_input_data', options)
-  //     .then((resp) => console.log(resp.json()))
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-
   return (
-    <div style={{ margin: 5 }}>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="left">#</StyledTableCell>
-              <StyledTableCell align="left">KKS</StyledTableCell>
-              <StyledTableCell align="left">DATE</StyledTableCell>
-              <StyledTableCell align="left">VALUE</StyledTableCell>
-              <StyledTableCell align="left">INACTIVE</StyledTableCell>
-              <StyledTableCell align="left">REMARKS</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.index}>
-                <StyledTableCell align="left">{row.index}</StyledTableCell>
-                <StyledTableCell align="left">{row.kks}</StyledTableCell>
-                <StyledTableCell align="left">{row.date}</StyledTableCell>
-                <StyledTableCell align="left">{row.value}</StyledTableCell>
-                <StyledTableCell align="left">{row.inactive}</StyledTableCell>
-                <StyledTableCell align="left">{row.remarks}</StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <div>
+      {isloading ? (
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="left">#</StyledTableCell>
+                <StyledTableCell align="left">KKS</StyledTableCell>
+                <StyledTableCell align="left">DESCRIPTION</StyledTableCell>
+                <StyledTableCell align="left">DATE</StyledTableCell>
+                <StyledTableCell align="left">VALUE</StyledTableCell>
+                <StyledTableCell align="left">INACTIVE</StyledTableCell>
+                <StyledTableCell align="left">REMARKS</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, index) => (
+                <StyledTableRow key={row['#']}>
+                  <StyledTableCell align="left">{index + 1}</StyledTableCell>
+                  <StyledTableCell align="left">{row.kks}</StyledTableCell>
+                  <StyledTableCell align="left">
+                    {row.description}
+                  </StyledTableCell>
+                  <StyledTableCell align="left">{row.date}</StyledTableCell>
+                  <StyledTableCell align="left">{row.value}</StyledTableCell>
+                  <StyledTableCell align="left">{row.inactive}</StyledTableCell>
+                  <StyledTableCell align="left">{row.remarks}</StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </div>
   );
 };

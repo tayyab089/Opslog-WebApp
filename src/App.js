@@ -8,7 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import DataPage from './Views/DataPage';
 import HomePage from './Views/HomePage';
-import ReportPage from './Views/RportPage';
+import ReportPage from './Views/ReportPage';
 
 import './App.css';
 
