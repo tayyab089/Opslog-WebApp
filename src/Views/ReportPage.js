@@ -75,7 +75,7 @@ const ReportPage = () => {
       headers: { 'Content-Type': 'application/json' },
     };
 
-    fetch('http://dataloggingapp.herokuapp.com/get_report_data/', options)
+    fetch('https://dataloggingapp.herokuapp.com/get_report_data/', options)
       .then((resp) => resp.json())
       .then((response) => {
         console.log(response);
