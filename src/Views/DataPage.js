@@ -65,7 +65,7 @@ const DataPage = () => {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     };
-    fetch('https://dataloggingapp.herokuapp.com/get_input_data/', options)
+    fetch('https://dataloggingkeapp.herokuapp.com/get_input_data/', options)
       .then((resp) => resp.json())
       .then((response) => {
         setRows(response);

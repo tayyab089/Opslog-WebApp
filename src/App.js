@@ -16,7 +16,7 @@ import OpslogLogo from './assets/images/Opslog_logo.png';
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#1e784f' },
+    primary: { main: '#264094' }, //1e784f
   },
 });
 
