@@ -20,6 +20,12 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  root: {
+    width: '100%',
+  },
+  container: {
+    maxHeight: '92vh',
+  },
 });
 
 const StyledTableCell = withStyles((theme) => ({
@@ -81,36 +87,48 @@ const DataPage = () => {
           <CircularProgress />
         </div>
       ) : (
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="left">#</StyledTableCell>
-                <StyledTableCell align="left">KKS</StyledTableCell>
-                <StyledTableCell align="left">DESCRIPTION</StyledTableCell>
-                <StyledTableCell align="left">DATE</StyledTableCell>
-                <StyledTableCell align="left">VALUE</StyledTableCell>
-                <StyledTableCell align="left">INACTIVE</StyledTableCell>
-                <StyledTableCell align="left">REMARKS</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row, index) => (
-                <StyledTableRow key={row['#']}>
-                  <StyledTableCell align="left">{index + 1}</StyledTableCell>
-                  <StyledTableCell align="left">{row.kks}</StyledTableCell>
-                  <StyledTableCell align="left">
-                    {row.description}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">{row.date}</StyledTableCell>
-                  <StyledTableCell align="left">{row.value}</StyledTableCell>
-                  <StyledTableCell align="left">{row.inactive}</StyledTableCell>
-                  <StyledTableCell align="left">{row.remarks}</StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Paper className={classes.root}>
+          <TableContainer className={classes.container}>
+            <Table
+              className={classes.table}
+              stickyHeader
+              aria-label="sticky table"
+            >
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="left">#</StyledTableCell>
+                  <StyledTableCell align="left">KKS</StyledTableCell>
+                  <StyledTableCell align="left">DESCRIPTION</StyledTableCell>
+                  <StyledTableCell align="left">DATE</StyledTableCell>
+                  {/* <StyledTableCell align="left">TIME</StyledTableCell> */}
+                  <StyledTableCell align="left">VALUE</StyledTableCell>
+                  <StyledTableCell align="left">INACTIVE</StyledTableCell>
+                  <StyledTableCell align="left">REMARKS</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row, index) => (
+                  <StyledTableRow key={row['#']}>
+                    <StyledTableCell align="left">{index + 1}</StyledTableCell>
+                    <StyledTableCell align="left">{row.kks}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      {row.description}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">{row.date}</StyledTableCell>
+                    {/* <StyledTableCell align="left">{row.time}</StyledTableCell> */}
+                    <StyledTableCell align="left">{row.value}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      {row.inactive}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {row.remarks}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       )}
     </div>
   );

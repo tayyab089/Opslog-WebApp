@@ -31,6 +31,9 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  container: {
+    maxHeight: '50vh',
+  },
 });
 
 const StyledTableCell = withStyles((theme) => ({
@@ -124,7 +127,7 @@ const ReportPage = () => {
               </Typography>
             </Grid>
             <Grid item xs={9}>
-              <Typography variant="button">620</Typography>
+              <Typography variant="button">262</Typography>
             </Grid>
           </Grid>
         </div>
@@ -133,8 +136,12 @@ const ReportPage = () => {
             <CircularProgress />
           </div>
         ) : (
-          <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
+          <TableContainer className={classes.container} component={Paper}>
+            <Table
+              className={classes.table}
+              stickyHeader
+              aria-label="simple table"
+            >
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="left">DATE</StyledTableCell>
@@ -150,6 +157,9 @@ const ReportPage = () => {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     KKS INACTIVE COUNT
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    REMARKS COUNT
                   </StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -169,6 +179,9 @@ const ReportPage = () => {
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {row.kks_inactive_count}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.remarks}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

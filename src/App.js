@@ -9,6 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import DataPage from './Views/DataPage';
 import HomePage from './Views/HomePage';
 import ReportPage from './Views/ReportPage';
+import GridPage from './Views/GridPage';
+import LayeredData from './Views/LayeredData';
+import DataList from './Views/DataList';
 
 import './App.css';
 
@@ -87,8 +90,14 @@ function App() {
             <Route path="/report">
               <ReportPage />
             </Route>
+            <Route path="/sdata/:section">
+              <DataList />
+            </Route>
+            <Route path="/sdata">
+              <LayeredData />
+            </Route>
             <Route path="/data">
-              <DataPage />
+              <GridPage />
             </Route>
             <Route path="/">
               <HomePage />
